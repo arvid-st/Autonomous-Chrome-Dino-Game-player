@@ -5,7 +5,11 @@ import cv2
 import keyboard
 import pyautogui as pag
 
-spaceIsNotPressed = True
+import ObstacleDetection
+
+Run = True
+ObjectAlreadyInImage = False
+AmountOfObjectsDetected = 0
 
 def GetScreenResolution():
     with mss.mss() as sct:
@@ -29,12 +33,25 @@ screen_width, screen_height = GetScreenResolution()
 print(screen_width)
 print(screen_height)
 
-while spaceIsNotPressed:
-    if keyboard.is_pressed('space'):
-        spaceIsNotPressed = False
-        TakeScreenShotAtSecionOfScreen((0, 0), (screen_width, screen_height),"entireScreen")  # in this case screenshot the section "entire screen"
+while Run:
+    if keyboard.is_pressed('s'):
+        Run = False
 
-        TakeScreenShotAtSecionOfScreen((1214, 313), (1277, 328), "Score")
-        # Top left: Point(x=1214, y=313)
-        # Bottom right: Point(x=1277, y=328)
+    TakeScreenShotAtSecionOfScreen((1190, 387), (1290, 465), "ObstacleCapture")
 
+    ObjectInImage = ObstacleDetection.detectObstacle(cv2.imread("ObstacleCapture.png"))
+
+    if ObjectInImage and not ObjectAlreadyInImage:
+        AmountOfObjectsDetected += 1
+        print("Detected obstacle")
+        TakeScreenShotAtSecionOfScreen((0, 0), (screen_width, screen_height),
+                                       "entireScreen" + str(AmountOfObjectsDetected))  # in this case screenshot the section "entire screen"
+
+        TakeScreenShotAtSecionOfScreen((1219, 316), (1273, 326), "Score" + str(AmountOfObjectsDetected))
+        # Top left: Point(x=1219, y=316)
+        # Bottom right: Point(x=1273, y=326)
+
+        TakeScreenShotAtSecionOfScreen((1190, 387), (1290, 465), "ObstacleCaptured" + str(AmountOfObjectsDetected))
+        # Top left: Point(x=1190, y=387)
+        # Bottom right: Point(x=1290, y=465)
+    ObjectAlreadyInImage = ObjectInImage

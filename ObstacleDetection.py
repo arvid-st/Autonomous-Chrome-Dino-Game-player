@@ -1,8 +1,6 @@
 import cv2
 import numpy as np
 
-ObjectAlreadyInImage = False
-
 def detectObstacle(image):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 

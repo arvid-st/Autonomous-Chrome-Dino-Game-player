@@ -41,17 +41,17 @@ while Run:
 
     ObjectInImage = ObstacleDetection.detectObstacle(cv2.imread("ObstacleCapture.png"))
 
-    if ObjectInImage and not ObjectAlreadyInImage:
+    if ObjectInImage and not ObjectAlreadyInImage: # This makes the code only capture the same object once
         AmountOfObjectsDetected += 1
         print("Detected obstacle")
         TakeScreenShotAtSecionOfScreen((0, 0), (screen_width, screen_height),
                                        "entireScreen" + str(AmountOfObjectsDetected))  # in this case screenshot the section "entire screen"
 
-        TakeScreenShotAtSecionOfScreen((1219, 316), (1273, 326), "Score" + str(AmountOfObjectsDetected))
+        TakeScreenShotAtSecionOfScreen((1219, 316), (1273, 326), "Score" + str(AmountOfObjectsDetected)) # Magic numbers but works :/
         # Top left: Point(x=1219, y=316)
         # Bottom right: Point(x=1273, y=326)
 
-        TakeScreenShotAtSecionOfScreen((1190, 387), (1290, 465), "ObstacleCaptured" + str(AmountOfObjectsDetected))
+        TakeScreenShotAtSecionOfScreen((1190, 387), (1290, 465), "ObstacleCaptured" + str(AmountOfObjectsDetected)) # Magic numbers but works :/
         # Top left: Point(x=1190, y=387)
         # Bottom right: Point(x=1290, y=465)
     ObjectAlreadyInImage = ObjectInImage

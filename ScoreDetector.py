@@ -35,5 +35,3 @@ def createScoreMask(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     _, mask = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY) # Makes all pixels under 127 grayscale brightness black, and all over 127 white.
     return mask
-
-print(DetectScore(cv2.imread("Img/Score/Two.jpg"),cv2.imread("Img/Score/One.jpg"),cv2.imread("Img/Score/Two.jpg"),cv2.imread("Img/Score/One.jpg"),cv2.imread("Img/Score/One.jpg")))

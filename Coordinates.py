@@ -4,12 +4,14 @@ import pyautogui as pag
 screenWidth, screenHeight = pag.size()
 
 AbsoluteCoordinateScoreTopLeft = (1219, 316)
-AbsoluteCoordinateScoreBottomRight = (1272, 327)
+AbsoluteCoordinateScoreBottomRight = (1219, 316)
 RelativeCoordinateScoreTopLeft = (AbsoluteCoordinateScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateScoreBottomRight = (AbsoluteCoordinateScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateScoreBottomRight[1] / 1080 * screenHeight)
+RelativeCoordinateScoreBottomRight = (AbsoluteCoordinateScoreBottomRight[0] / 1920 * screenWidth + 53, AbsoluteCoordinateScoreBottomRight[1] / 1080 * screenHeight + 11)
 RelativeCoordinateScore = (RelativeCoordinateScoreTopLeft, RelativeCoordinateScoreBottomRight)
 
 AbsoluteCoordinateObstacleTopLeft = (1190, 387)
+# (979,316) (1032, 327) same coordinates but on 1440x1080. still 53 pixels in width even with 4:3 ration instead of 16:9
+# 979 / 1440 = 0.67986111111. 1219 / 1920 =  0.63489583333
 AbsoluteCoordinateObstacleBottomRight = (1290, 465)
 RelativeCoordinateObstacleTopLeft = (AbsoluteCoordinateObstacleTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateObstacleTopLeft[1] / 1080 * screenHeight)
 RelativeCoordinateObstacleBottomRight = (AbsoluteCoordinateObstacleBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateObstacleBottomRight[1] / 1080 * screenHeight)
@@ -31,31 +33,31 @@ RelativeCoordinateObstacle = (RelativeCoordinateObstacleTopLeft, RelativeCoordin
 # 1 score place: 1261 + 2 (1263) -> 1263 + 9 (1272)
 
 AbsoluteCoordinateTenThousandScoreTopLeft = (1219, 316)
-AbsoluteCoordinateTenThousandScoreBottomRight = (1228, 327)
+AbsoluteCoordinateTenThousandScoreBottomRight = (1219, 316)
 RelativeCoordinateTenThousandScoreTopLeft = (AbsoluteCoordinateTenThousandScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateTenThousandScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateTenThousandScoreBottomRight = (AbsoluteCoordinateTenThousandScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateTenThousandScoreBottomRight[1] / 1080 * screenHeight)
+RelativeCoordinateTenThousandScoreBottomRight = (AbsoluteCoordinateTenThousandScoreBottomRight[0] / 1920 * screenWidth + 9, AbsoluteCoordinateTenThousandScoreBottomRight[1] / 1080 * screenHeight + 11)
 RelativeCoordinateTenThousandScore = (RelativeCoordinateTenThousandScoreTopLeft, RelativeCoordinateTenThousandScoreBottomRight)
 
 AbsoluteCoordinateThousandScoreTopLeft = (1230, 316)
-AbsoluteCoordinateThousandScoreBottomRight = (1239, 327)
+AbsoluteCoordinateThousandScoreBottomRight = (1230, 316)
 RelativeCoordinateThousandScoreTopLeft = (AbsoluteCoordinateThousandScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateThousandScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateThousandScoreBottomRight = (AbsoluteCoordinateThousandScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateThousandScoreBottomRight[1] / 1080 * screenHeight)
+RelativeCoordinateThousandScoreBottomRight = (AbsoluteCoordinateThousandScoreBottomRight[0] / 1920 * screenWidth + 9, AbsoluteCoordinateThousandScoreBottomRight[1] / 1080 * screenHeight + 11)
 RelativeCoordinateThousandScore = (RelativeCoordinateThousandScoreTopLeft, RelativeCoordinateThousandScoreBottomRight)
 
 AbsoluteCoordinateHundredScoreTopLeft = (1241, 316)
-AbsoluteCoordinateHundredScoreBottomRight = (1250, 327)
+AbsoluteCoordinateHundredScoreBottomRight = (1241, 316)
 RelativeCoordinateHundredScoreTopLeft = (AbsoluteCoordinateHundredScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateHundredScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateHundredScoreBottomRight = (AbsoluteCoordinateHundredScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateHundredScoreBottomRight[1] / 1080 * screenHeight)
+RelativeCoordinateHundredScoreBottomRight = (AbsoluteCoordinateHundredScoreBottomRight[0] / 1920 * screenWidth + 9, AbsoluteCoordinateHundredScoreBottomRight[1] / 1080 * screenHeight + 11)
 RelativeCoordinateHundredScore = (RelativeCoordinateHundredScoreTopLeft, RelativeCoordinateHundredScoreBottomRight)
 
 AbsoluteCoordinateTenScoreTopLeft = (1252, 316)
-AbsoluteCoordinateTenScoreBottomRight = (1261, 327)
+AbsoluteCoordinateTenScoreBottomRight = (1252, 316)
 RelativeCoordinateTenScoreTopLeft = (AbsoluteCoordinateTenScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateTenScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateTenScoreBottomRight = (AbsoluteCoordinateTenScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateTenScoreBottomRight[1] / 1080 * screenHeight)
+RelativeCoordinateTenScoreBottomRight = (AbsoluteCoordinateTenScoreBottomRight[0] / 1920 * screenWidth + 9, AbsoluteCoordinateTenScoreBottomRight[1] / 1080 * screenHeight + 11)
 RelativeCoordinateTenScore = (RelativeCoordinateTenScoreTopLeft, RelativeCoordinateTenScoreBottomRight)
 
 AbsoluteCoordinateOneScoreTopLeft = (1263, 316)
-AbsoluteCoordinateOneScoreBottomRight = (1272, 327)
+AbsoluteCoordinateOneScoreBottomRight = (1263, 316)
 RelativeCoordinateOneScoreTopLeft = (AbsoluteCoordinateOneScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateOneScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateOneScoreBottomRight = (AbsoluteCoordinateOneScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateOneScoreBottomRight[1] / 1080 * screenHeight)
+RelativeCoordinateOneScoreBottomRight = (AbsoluteCoordinateOneScoreBottomRight[0] / 1920 * screenWidth + 9, AbsoluteCoordinateOneScoreBottomRight[1] / 1080 * screenHeight + 11)
 RelativeCoordinateOneScore = (RelativeCoordinateOneScoreTopLeft, RelativeCoordinateOneScoreBottomRight)

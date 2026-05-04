@@ -14,6 +14,7 @@ WaitForRun = True
 Run = True
 ObjectAlreadyInImage = False
 AmountOfObjectsDetected = 0
+DEBUG = True
 
 while WaitForRun:
     if keyboard.is_pressed('s'):
@@ -29,13 +30,27 @@ while Run:
 
     obstacleImage = TakeScreenShotAtSecionOfScreen(RelativeCoordinateObstacleTopLeft, RelativeCoordinateObstacleBottomRight)
 
-    ObjectInImage = detectObstacle(obstacleImage)
+    ObjectInImage, mask = detectObstacle(obstacleImage, return_mask = True)
 
-    if ObjectInImage and not ObjectAlreadyInImage: # This makes the code only capture the same object once
-        AmountOfObjectsDetected += 1
-        print("Detected obstacle")
+    if DEBUG:
+        cv2.imshow("Raw obstacle capture", obstacleImage)
 
-        TakeScreenShotAtSecionOfScreen(RelativeCoordinateScoreTopLeft, RelativeCoordinateScoreBottomRight, "Score" + str(AmountOfObjectsDetected)) # Only Score needs to be captured as an image.
-        print("Score" + str(AmountOfObjectsDetected) + ": " + str(DetectScore(*TakeScreeShotOfScore())))
+        cv2.imshow("Obstacle capture with mask", mask)
 
-    ObjectAlreadyInImage = ObjectInImage
+        debug_frame = obstacleImage.copy()
+        text = "Obstacle detected" if ObjectInImage else "No obstacle"
+        color = (0, 0, 255) if ObjectInImage else (0, 255, 0)
+
+        cv2.putText(debug_frame, text, (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
+
+        cv2.imshow("Obstacle Debug", debug_frame)
+
+        score_images = TakeScreeShotOfScore()
+        for i, img in enumerate(score_images):
+            cv2.imshow(f"Score Digit {i}", img)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            Run = False
+
+cv2.destroyAllWindows()

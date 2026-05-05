@@ -7,6 +7,21 @@ import pyautogui as pag
 
 from Coordinates import *
 
+def FullScreenScreenShot():
+    full_screen = TakeScreenShot({
+        "left": 0,
+        "top": 0,
+        "width": screenWidth,
+        "height": screenHeight
+    })
+    return full_screen
+
+
+def TakeScreenShot(region):
+    with mss.mss() as sct:
+        img = sct.grab(region)
+        return cv2.cvtColor(np.array(img), cv2.COLOR_BGRA2BGR)
+
 def TakeScreenShotAtSecionOfScreen(top_left, bottom_right, name = None):
     with mss.mss() as sct:
         region = {

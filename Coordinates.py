@@ -1,61 +1,80 @@
 import pyautogui as pag
-# All coordinates are taken on 1920x1080 resolution
+import numpy as np
+import cv2
+
+
+def findDino(frame):
+    template = cv2.imread("Img/Dino2.png", cv2.IMREAD_GRAYSCALE)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    best_match = None
+    best_val = 0
+
+    candidates = []
+
+    for scale in np.linspace(0.5, 1.5, 20):
+        resized = cv2.resize(template, None, fx=scale, fy=scale)
+        h, w = resized.shape
+
+        if h > gray.shape[0] or w > gray.shape[1]:
+            continue
+
+        result = cv2.matchTemplate(gray, resized, cv2.TM_CCOEFF_NORMED)
+
+        locations = np.where(result >= 0.5)
+
+        for pt in zip(*locations[::-1]):
+            candidates.append((pt[0], pt[1], w, h))
+
+    # pick the lowest dino
+    if not candidates:
+        return None
+
+    best = max(candidates, key=lambda c: c[1])  # largest y = lowest
+    return best
+
+
+def computeObstacleROI(dino):
+    x, y, w, h = dino
+
+    return {
+        "left": int(x + w * 1.5),
+        "top": int(y),
+        "width": int(w * 4),
+        "height": int(h * 1.5)
+    }
+
+def compute_obstacle_roi_local(dino_local):
+    x, y, w, h = dino_local
+
+    return {
+        "left": int(x + w * 1.5),
+        "top": int(y),
+        "width": int(w * 4),
+        "height": int(h * 1.5)
+    }
+
+def compute_game_region(dino, screenWidth, screenHeight):
+    x, y, w, h = dino
+
+    left = int(x - w * 2)
+    top = int(y - h * 2)
+    width = int(w * 12)
+    height = int(h * 5)
+
+    left = max(0, left)
+    top = max(0, top)
+
+    width = min(width, screenWidth - left)
+    height = min(height, screenHeight - top)
+
+    return {
+        "left": left,
+        "top": top,
+        "width": width,
+        "height": height
+    }
+
 
 screenWidth, screenHeight = pag.size()
 
-AbsoluteCoordinateScoreTopLeft = (1219, 316)
-AbsoluteCoordinateScoreBottomRight = (1272, 327)
-RelativeCoordinateScoreTopLeft = (AbsoluteCoordinateScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateScoreBottomRight = (AbsoluteCoordinateScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateScoreBottomRight[1] / 1080 * screenHeight)
-RelativeCoordinateScore = (RelativeCoordinateScoreTopLeft, RelativeCoordinateScoreBottomRight)
-
-AbsoluteCoordinateObstacleTopLeft = (1190, 387)
-AbsoluteCoordinateObstacleBottomRight = (1290, 465)
-RelativeCoordinateObstacleTopLeft = (AbsoluteCoordinateObstacleTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateObstacleTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateObstacleBottomRight = (AbsoluteCoordinateObstacleBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateObstacleBottomRight[1] / 1080 * screenHeight)
-RelativeCoordinateObstacle = (RelativeCoordinateObstacleTopLeft, RelativeCoordinateObstacleBottomRight)
-
-# All score images have the same height of 316 -> 327 (10 pixels)
-
-# Entire score capture: 1219 -> 1272 (53 pixels) with 4x gaps with 2 pixels.
-
-# Each image is there for (53 - 4x2) / 5 pixels in width. (53-4x2) / 2 = 9
-# Each image is 9 pixels in width, 10 pixels high
-
-# All points bellow are only x-coordinate since y-coordinate is the same for all score numbers
-
-# 10 000 score place: 1219 -> 1219 + 9 (1228)
-# 1 000 score place: 1228 + 2 (1230) -> 1230 + 9 (1239)
-# 100 score place: 1239 + 2 (1241) -> 1241 + 9 (1250)
-# 10 score place: 1250 + 2 (1252) -> 1252 + 9 (1261)
-# 1 score place: 1261 + 2 (1263) -> 1263 + 9 (1272)
-
-AbsoluteCoordinateTenThousandScoreTopLeft = (1219, 316)
-AbsoluteCoordinateTenThousandScoreBottomRight = (1228, 327)
-RelativeCoordinateTenThousandScoreTopLeft = (AbsoluteCoordinateTenThousandScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateTenThousandScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateTenThousandScoreBottomRight = (AbsoluteCoordinateTenThousandScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateTenThousandScoreBottomRight[1] / 1080 * screenHeight)
-RelativeCoordinateTenThousandScore = (RelativeCoordinateTenThousandScoreTopLeft, RelativeCoordinateTenThousandScoreBottomRight)
-
-AbsoluteCoordinateThousandScoreTopLeft = (1230, 316)
-AbsoluteCoordinateThousandScoreBottomRight = (1239, 327)
-RelativeCoordinateThousandScoreTopLeft = (AbsoluteCoordinateThousandScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateThousandScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateThousandScoreBottomRight = (AbsoluteCoordinateThousandScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateThousandScoreBottomRight[1] / 1080 * screenHeight)
-RelativeCoordinateThousandScore = (RelativeCoordinateThousandScoreTopLeft, RelativeCoordinateThousandScoreBottomRight)
-
-AbsoluteCoordinateHundredScoreTopLeft = (1241, 316)
-AbsoluteCoordinateHundredScoreBottomRight = (1250, 327)
-RelativeCoordinateHundredScoreTopLeft = (AbsoluteCoordinateHundredScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateHundredScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateHundredScoreBottomRight = (AbsoluteCoordinateHundredScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateHundredScoreBottomRight[1] / 1080 * screenHeight)
-RelativeCoordinateHundredScore = (RelativeCoordinateHundredScoreTopLeft, RelativeCoordinateHundredScoreBottomRight)
-
-AbsoluteCoordinateTenScoreTopLeft = (1252, 316)
-AbsoluteCoordinateTenScoreBottomRight = (1261, 327)
-RelativeCoordinateTenScoreTopLeft = (AbsoluteCoordinateTenScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateTenScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateTenScoreBottomRight = (AbsoluteCoordinateTenScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateTenScoreBottomRight[1] / 1080 * screenHeight)
-RelativeCoordinateTenScore = (RelativeCoordinateTenScoreTopLeft, RelativeCoordinateTenScoreBottomRight)
-
-AbsoluteCoordinateOneScoreTopLeft = (1263, 316)
-AbsoluteCoordinateOneScoreBottomRight = (1272, 327)
-RelativeCoordinateOneScoreTopLeft = (AbsoluteCoordinateOneScoreTopLeft[0] / 1920 * screenWidth, AbsoluteCoordinateOneScoreTopLeft[1] / 1080 * screenHeight)
-RelativeCoordinateOneScoreBottomRight = (AbsoluteCoordinateOneScoreBottomRight[0] / 1920 * screenWidth, AbsoluteCoordinateOneScoreBottomRight[1] / 1080 * screenHeight)
-RelativeCoordinateOneScore = (RelativeCoordinateOneScoreTopLeft, RelativeCoordinateOneScoreBottomRight)
